@@ -1,0 +1,38 @@
+# CWRU 公共配置：预处理、描述文本生成和可视化共用此文件。
+# 所有数据路径均相对于项目根目录；修改配置不会自动重新生成数据。
+
+preprocessing:
+  raw_dir: data/datasets/CWRU/raw          # 原始 MATLAB 振动信号目录
+  output_dir: data/datasets/CWRU/processed # train/test NPZ 及元数据保存目录
+  window_length: 1024                     # 单个样本的时间步数，输入形状为 (1024, 1)
+  stride: 1024                            # 滑窗步长，必须 >= window_length，避免窗口重叠
+  samples_per_class: 115                  # 每类训练集与测试集的样本总数
+  train_ratio: 0.8                        # 每类 92 个训练样本、23 个测试样本
+  random_seed: 42                         # 控制样本排列的随机种子
+
+descriptions:
+  # 当前所选源文件均为 0 HP 工况，包括正常轴承的 97.mat。
+  load_hp_by_source_folder:
+    normal: 0
+    fan_end_12k_0HP: 0
+    drive_end_12k_0HP: 0
+  load_reference: 'CWRU official source tables: selected files are the 0 HP records, including Normal_0 (97.mat).'
+  # 属性模板与对应状态模板做笛卡尔积；新增条目即可增加文本变体。
+  # 保留花括号占位符和格式说明，转速及故障信息从元数据中填入。
+  attribute_prompts:
+    operating_conditions: 'This bearing operates under a motor load of {load_hp:g} HP at a rotational speed of {rpm:g} rpm. {location_sentence}'
+    measurement_context: 'The vibration signal describes a bearing operating at {rpm:g} rpm under a motor load of {load_hp:g} HP. {location_sentence}'
+  state_prompts:
+    normal:
+      healthy: 'The bearing is in a normal, healthy operating state with no bearing fault.'
+    fault:
+      defect: 'The bearing has a fault affecting the {fault_name}, with a defect diameter of {fault_size_inches:.3f} inches.'
+  combination_template: '{attribute_description} {state_description}'
+  # 读取 preprocessing.output_dir 的元数据和标签，在同目录生成 class_descriptions.json。
+
+visualization:
+  # 原始信号与处理后数据的路径复用 preprocessing，输出图片另存于此目录。
+  output_dir: data/visualization
+  start_index: 0                         # 波形展示的起始采样点，从 0 开始
+  points: 1600                           # 每张波形展示的采样点数
+  dpi: 180                               # 导出图片分辨率

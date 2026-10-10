@@ -1,0 +1,105 @@
+# =========================
+# Python 缓存与构建产物
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# =========================
+# 虚拟环境与本地密钥
+# =========================
+.venv/
+venv/
+env/
+ENV/
+.env
+.env.*
+!.env.example
+
+# =========================
+# 测试、覆盖率与静态检查缓存
+# =========================
+.pytest_cache/
+tests/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+.ruff_cache/
+
+# =========================
+# 模型、数据集与实验输出
+# =========================
+# Vicuna 及其他预训练权重体积很大，不提交到代码仓库。
+models/
+# 原始 CWRU 数据、处理后的 NPZ 和自动生成的描述文件。
+data/datasets/
+# 自动生成的图片、checkpoint、日志和评估结果。
+data/visualization/
+outputs/
+experiments/
+checkpoints/
+logs/
+.cache/
+runs/
+wandb/
+mlruns/
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.bin
+*.onnx
+*.npy
+*.npz
+
+# =========================
+# IDE、Notebook 与操作系统文件
+# =========================
+.idea/
+.vscode/
+.vs/
+*.iml
+.ipynb_checkpoints/
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# =========================
+# 临时文件与日志
+# =========================
+*.log
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*.orig
+*.rej

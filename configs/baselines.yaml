@@ -1,0 +1,79 @@
+# 参考 FD-LLM 第 4.1.4/4.2.1 节及文献 [58]～[63]。
+# 除 baselines/README.md 明确说明外，以下超参数均为项目默认值。
+seed: 42
+split_seed: 42  # 所有模型和重复实验共用同一训练/验证划分。
+repeat_seeds: [42, 43, 44, 45, 46, 47, 48, 49, 50, 51]  # 改变训练随机性，统计 10 次实验。
+device: auto
+output_dir: outputs/baselines
+data:
+  train_path: data/datasets/CWRU/processed/train.npz
+  test_path: data/datasets/CWRU/processed/test.npz
+  descriptions_path: data/datasets/CWRU/processed/class_descriptions.json
+  num_classes: 19
+  input_size: 1
+  sequence_length: 1024
+  validation_fraction: 0.2  # 从训练集内部划分，保留原测试集用于最终评估。
+  num_workers: 0
+training:
+  epochs: 50
+  batch_size: 32
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  max_grad_norm: 1.0
+  gradient_accumulation_steps: 1
+pretraining:
+  # 此阶段仅用于 SimCLR，对比预训练后再进入统一的监督分类训练。
+  validation_seed: 12345  # 验证增强使用固定随机种子，公平比较不同 epoch。
+  epochs: 100
+  batch_size: 64
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  max_grad_norm: 1.0
+  gradient_accumulation_steps: 1
+evaluation:
+  batch_size: 32
+  candidate_chunk_size: 1  # 兼容公共评估接口，基线分类器无需枚举文本答案。
+  tsne_perplexity: 30
+  tsne_max_samples: 1000
+models:
+  cnn:
+    channels: [32, 64, 128]
+    kernels: [65, 5, 5]
+    strides: [4, 1, 1]
+    dropout: 0.2
+  resnet18:
+    base_channels: 64
+    stem_kernel: 7
+  transformer:
+    patch_size: 16  # 每 16 个采样点组成一个 token，1024 点得到 64 个 token。
+    d_model: 128
+    nhead: 4
+    num_layers: 3
+    dim_feedforward: 256
+    dropout: 0.1
+  attention_lstm:
+    hidden_size: 128
+    num_layers: 2
+    attention_size: 64
+    dropout: 0.1
+    bidirectional: false
+  attention_gru:
+    hidden_size: 128
+    num_layers: 2
+    attention_size: 64
+    dropout: 0.1
+  simclr:
+    encoder: resnet18
+    encoder_kwargs:
+      base_channels: 64
+      stem_kernel: 7
+    projection_hidden: 256
+    projection_dim: 128
+    temperature: 0.5
+    downstream: linear_probe  # 冻结预训练编码器并训练线性头；可改为 finetune。
+    augmentations:
+      # 时间域增强：噪声、幅值缩放、随机裁剪后插值、连续片段遮挡。
+      jitter_std: 0.02
+      scale_std: 0.1
+      crop_min_ratio: 0.8
+      mask_ratio: 0.05

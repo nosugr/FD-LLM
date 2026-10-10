@@ -1,0 +1,9 @@
+{
+  "input_size": 1,
+  "sequence_length": 1024,
+  "hidden_size": 256,
+  "num_layers": 2,
+  "embedding_dim": 4096,
+  "dropout": 0.1,
+  "bidirectional": false
+}

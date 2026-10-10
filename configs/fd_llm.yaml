@@ -1,0 +1,71 @@
+# 论文明确给出的参数单独注明，其余为可调整的工程默认值。
+seed: 42
+device: auto
+data:
+  train_path: data/datasets/CWRU/processed/train.npz
+  test_path: data/datasets/CWRU/processed/test.npz
+  descriptions_path: data/datasets/CWRU/processed/class_descriptions.json
+  num_classes: 19
+  validation_fraction: 0.2  # 仅从训练集分层划出验证集，测试集不参与调参。
+  num_workers: 0
+model:
+  name_or_path: models/vicuna-7b-v1.5  # 项目内本地 Vicuna-7B 权重目录。
+  revision: main
+  local_files_only: true  # 默认只读取本地缓存，不下载模型或分词器。
+  dtype: auto  # CPU 用 float32；CUDA 优先 bfloat16，不支持时用 float16。
+data_encoder:
+  # LSTM 的层数及隐藏维度为工程选择，输出维度与 Vicuna-7B 对齐。
+  input_size: 1
+  sequence_length: 1024
+  hidden_size: 256
+  num_layers: 2
+  embedding_dim: 4096
+  dropout: 0.1
+  bidirectional: false
+text_encoder:
+  pooling: mean  # 最后一层隐藏状态的掩码均值池化，论文未指定池化方式。
+  max_length: 256
+contrastive:
+  temperature: 0.07  # 公式 (4) 的温度初始值。
+  epsilon: 1.0e-6  # 公式 (4) 的稳定项。
+  learn_temperature: false  # 默认固定温度，论文未明确是否优化该参数。
+alignment:
+  epochs: 30
+  batch_size: 32
+  text_batch_size: 4
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  max_grad_norm: 1.0
+  gradient_accumulation_steps: 1
+  output_dir: outputs/alignment
+diagnosis:
+  alignment_checkpoint: outputs/alignment/best.pt
+  epochs: 10
+  batch_size: 1
+  learning_rate: 0.0002
+  weight_decay: 0.0
+  max_grad_norm: 1.0
+  gradient_accumulation_steps: 8  # 累积多个小批次梯度，降低单步显存需求。
+  gradient_checkpointing: true  # 反向时重新计算部分激活，以计算时间换显存。
+  output_dir: outputs/diagnosis
+prompt:
+  num_tokens: 8  # 连续 Prompt 长度，论文未明确 n1 的具体取值。
+  init_std: 0.02
+  human_prefix: "### Human: <Data>"
+  data_suffix: "</Data>"
+  fuzzy_prefix: "<Fuzzy semantic>"
+  assistant_suffix: "</Fuzzy semantic> What is the state of this bearing? ### Assistant:"
+  answer_template: " The bearing state is {class_name}."
+  max_answer_tokens: 96
+lora:
+  r: 8
+  lora_alpha: 16
+  lora_dropout: 0.05
+  target_modules: [q_proj, v_proj]  # 仅在注意力的查询及值投影中注入 LoRA。
+evaluation:
+  batch_size: 4
+  candidate_chunk_size: 4  # 每次并行评分的类别答案数量，用于控制推理显存。
+  max_new_tokens: 96
+  output_dir: outputs/evaluation
+  tsne_perplexity: 30
+  tsne_max_samples: 1000
