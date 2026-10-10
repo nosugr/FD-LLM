@@ -1,6 +1,6 @@
 """Organize CWRU data and call reusable plotting utilities.
 
-Run: python -m data.preprocessing.CWRU.visualization
+Run: python -m src.data_processing.visualization
 Add --distribution to also regenerate the existing class count chart.
 This entry point reads data only; it does not rebuild the processed dataset.
 """

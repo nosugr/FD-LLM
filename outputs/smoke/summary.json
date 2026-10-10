@@ -1,0 +1,60 @@
+{
+  "purpose": "Offline connectivity only; random tiny Llama, not Vicuna accuracy",
+  "source_train_path": "D:\\桌面\\Agent监测\\FD-LLM\\data\\datasets\\CWRU\\processed\\train.npz",
+  "source_test_path": "D:\\桌面\\Agent监测\\FD-LLM\\data\\datasets\\CWRU\\processed\\test.npz",
+  "input_shape": [
+    2,
+    1024,
+    1
+  ],
+  "data_feature_shape": [
+    2,
+    16
+  ],
+  "class_score_shape": [
+    2,
+    19
+  ],
+  "class_ids": [
+    11,
+    11
+  ],
+  "class_names": [
+    "Drive end / inner race / 0.014 in",
+    "Drive end / inner race / 0.014 in"
+  ],
+  "generated_test_text": [
+    "ball ball"
+  ],
+  "alignment_history": [
+    {
+      "epoch": 1,
+      "train": {
+        "loss": 2.9676709175109863,
+        "top1": 0.05263157933950424
+      },
+      "validation": {
+        "loss": 2.955448865890503,
+        "top1": 0.05263157933950424
+      }
+    }
+  ],
+  "diagnosis_history": [
+    {
+      "epoch": 1,
+      "train": {
+        "loss": 3.839157819747925,
+        "token_accuracy": 0.03833865746855736
+      },
+      "validation": {
+        "loss": 3.8390231132507324,
+        "token_accuracy": 0.03833865746855736,
+        "accuracy": 0.05263157933950424
+      }
+    }
+  ],
+  "test_sample_count": 19,
+  "test_accuracy_not_a_performance_result": 0.05263157894736842,
+  "config": "D:\\桌面\\Agent监测\\FD-LLM\\outputs\\smoke\\smoke_config.yaml",
+  "checkpoint": "D:\\桌面\\Agent监测\\FD-LLM\\outputs\\smoke\\diagnosis\\best.pt"
+}

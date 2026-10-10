@@ -8,8 +8,8 @@ import numpy as np
 import pytest
 import yaml
 
-from data.preprocessing.CWRU import descriptions, pipeline, visualization
-from data.preprocessing.CWRU.config import DEFAULT_CONFIG, load_section
+from src.data_processing import descriptions, pipeline, visualization
+from src.data_processing.config import DEFAULT_CONFIG, load_section
 
 
 def test_shared_defaults_and_legacy_flat_config(tmp_path):

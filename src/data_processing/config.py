@@ -5,7 +5,8 @@ from pathlib import Path
 import yaml
 
 
-DEFAULT_CONFIG = Path(__file__).resolve().parents[3] / "configs" / "cwru.yaml"
+# src/data_processing/ 向上两层即项目根目录。
+DEFAULT_CONFIG = Path(__file__).resolve().parents[2] / "configs" / "cwru.yaml"
 SECTIONS = ("preprocessing", "descriptions", "visualization")
 
 

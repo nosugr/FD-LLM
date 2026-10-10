@@ -1,4 +1,4 @@
-"""Run with: python -m data.preprocessing.CWRU."""
+"""Run with: python -m src.data_processing."""
 
 import argparse
 from pathlib import Path

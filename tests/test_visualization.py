@@ -14,7 +14,7 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from src.utils.visualization import plot_waveform_grid
-from data.preprocessing.CWRU import visualization
+from src.data_processing import visualization
 
 
 def test_waveform_preserves_raw_segment():

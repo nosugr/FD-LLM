@@ -5,9 +5,9 @@ import json
 
 import pytest
 
-from data.preprocessing.CWRU.config import load_section
-from data.preprocessing.CWRU.descriptions import DEFAULT_CONFIG, build_class_descriptions
-from data.preprocessing.CWRU.pipeline import PROJECT_ROOT
+from src.data_processing.config import load_section
+from src.data_processing.descriptions import DEFAULT_CONFIG, build_class_descriptions
+from src.data_processing.pipeline import PROJECT_ROOT
 
 
 @pytest.fixture

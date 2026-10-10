@@ -11,7 +11,8 @@ from .config import DEFAULT_CONFIG, load_section
 from .manifest import CLASSES, ClassSource
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[3]
+# 数据处理模块已置于 src/ 下，向上两层定位项目根目录。
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 
 def load_config(path: Path = DEFAULT_CONFIG) -> dict:

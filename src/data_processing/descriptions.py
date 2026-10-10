@@ -1,6 +1,6 @@
 """Generate class texts using attribute/state prompt sets (FD-LLM section 3.1).
 
-Run from the project root: python -m data.preprocessing.CWRU.descriptions
+Run from the project root: python -m src.data_processing.descriptions
 Add prompt entries in configs/cwru.yaml (descriptions) to extend text variants.
 No language model or signal transformation is needed for template generation.
 """

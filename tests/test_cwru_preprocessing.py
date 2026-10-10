@@ -3,8 +3,8 @@ import pytest
 import yaml
 from scipy.io import savemat
 
-from data.preprocessing.CWRU.manifest import CLASSES, ClassSource
-from data.preprocessing.CWRU import pipeline
+from src.data_processing.manifest import CLASSES, ClassSource
+from src.data_processing import pipeline
 
 
 def test_table6_file_mapping_and_fields():

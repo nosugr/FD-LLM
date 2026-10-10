@@ -63,7 +63,6 @@ models/
 data/datasets/
 # 自动生成的图片、checkpoint、日志和评估结果。
 data/visualization/
-outputs/
 experiments/
 checkpoints/
 logs/
