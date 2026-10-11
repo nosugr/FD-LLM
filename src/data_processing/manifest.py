@@ -1,6 +1,7 @@
 """Explicit Table 6 labels and verified CWRU 0 HP source files."""
 
 from dataclasses import dataclass
+from typing import Optional
 
 
 @dataclass(frozen=True)
@@ -8,10 +9,10 @@ class ClassSource:
     label: int
     bearing_position: str
     fault_type: str
-    fault_size_inches: float | None
+    fault_size_inches: Optional[float]
     source_file: str
     signal_field: str
-    outer_race_position: str | None = None
+    outer_race_position: Optional[str] = None
 
 
 def _source(label: int, end: str, fault: str, size: float, number: int) -> ClassSource:

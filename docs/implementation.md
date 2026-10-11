@@ -2,7 +2,7 @@
 
 本实现依据 `docs/FD-LLM Large language model for fault diagnosis of complex equipment.pdf`
 第 3 章、Fig. 1，以及公式 (3)～(10)。当前只完成工程框架和离线接口验证，
-未下载 Vicuna-7B、未进行正式训练，也不声称复现论文诊断精度。
+真实 Vicuna 权重的服务器加载、正式训练与诊断精度仍需在目标环境验证。
 
 ## 结构与论文对应
 
@@ -50,8 +50,8 @@ LoRA 可训练。用于 fuzzy 加权和的文本 prototype 保持原始幅值。
 可视化共用带注释的 `configs/cwru.yaml`；旧 LSTM JSON 为兼容保留。
 **训练入口以 YAML 为准**。模块导入路径沿用 `src.*`，从项目根目录运行。
 
-本地验证环境：Python 3.12、Torch 2.14.1 CPU、Transformers 4.57.6、PEFT 0.18.1。
-GPU 环境应先安装适合其 CUDA 的 PyTorch，再安装 `requirements.txt` 中依赖。
+目标环境为 AutoDL Linux、conda `fdllm`（Python 3.9）、RTX 4090；SSH 解释器、同步、
+依赖安装和服务器预检见 [AutoDL 指南](autodl.md)。历史本地 CPU 验证不代表服务器实测。
 本框架支持单 CPU / 单 CUDA 设备；不包含 DDP 或 4-bit 量化。
 
 1. 将项目、处理好的 CWRU 数据和下载完成的 Vicuna 模型部署到云端。
@@ -59,7 +59,8 @@ GPU 环境应先安装适合其 CUDA 的 PyTorch，再安装 `requirements.txt` 
    `model.name_or_path` 改为其他本地完整权重目录或 Hugging Face ID。默认
    `local_files_only: true` 阻止网络下载。仅在确实允许联网下载时显式改为 false。
    真实入口不会自动构造随机模型或降级到测试替身。
-3. `device: auto` 自动选择 CUDA/CPU；dtype auto 在 CPU 用 float32，在支持的 CUDA
+3. 正式配置 `device: cuda`，GPU 不可用即报错；显式配置 `auto` 可自动选择 CUDA/CPU。
+   dtype auto 在 CPU 用 float32，在支持的 CUDA
    用 bfloat16，否则 float16。LSTM 与缓存特征保持 float32，送入 LLM 时转换到
    embedding dtype。LoRA 和 Prompt 使用可训练的浮点参数。
 4. 不同显存可调整 batch_size、梯度累积次数和 gradient_checkpointing；默认启用
@@ -126,6 +127,8 @@ t-SNE 先用至多 50 维 PCA 降维、固定 seed、自动调整小样本 perpl
 可视化的是数据编码器特征，不将其分布直接解释为 LLM 推理能力或诊断准确率。
 
 ## 离线验证
+
+以下命令仅在 `tests/` 已同步至服务器项目根目录时可用；当前工作区的测试位于项目父目录。
 
 ```bash
 python -m pytest -q

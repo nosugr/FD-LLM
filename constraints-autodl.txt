@@ -1,0 +1,11 @@
+# Python 3.9 deployment versions. Install the CUDA torch wheel separately first.
+numpy==1.26.4
+scipy==1.13.1
+pytest==8.4.2
+matplotlib==3.9.4
+torch==2.6.0
+PyYAML==6.0.2
+transformers==4.51.3
+peft==0.15.2
+sentencepiece==0.2.0
+scikit-learn==1.6.1

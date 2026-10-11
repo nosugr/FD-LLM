@@ -8,7 +8,11 @@ def model_source(config):
     if not isinstance(source, str) or not source.strip():
         raise ValueError("model.name_or_path must be a model ID or local directory")
     local = project_path(source)
-    return str(local) if local.exists() else source
+    if local.is_dir():
+        return str(local)
+    if local.exists() or source.startswith(("models/", "./", "../", "/", "~", "$")):
+        raise FileNotFoundError(f"Model directory missing on this server: {local}")
+    return source
 
 
 def load_backbone(config, device, *, causal=False):

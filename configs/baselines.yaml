@@ -3,7 +3,7 @@
 seed: 42
 split_seed: 42  # 所有模型和重复实验共用同一训练/验证划分。
 repeat_seeds: [42, 43, 44, 45, 46, 47, 48, 49, 50, 51]  # 改变训练随机性，统计 10 次实验。
-device: auto
+device: cuda  # AutoDL 正式运行必须使用 GPU；smoke 模式另行使用 CPU。
 output_dir: outputs/baselines
 data:
   train_path: data/datasets/CWRU/processed/train.npz

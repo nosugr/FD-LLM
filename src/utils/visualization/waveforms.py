@@ -1,6 +1,7 @@
 """Dataset-independent time-domain waveform plots."""
 
 from collections.abc import Sequence
+from typing import Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -15,7 +16,7 @@ def plot_waveform_grid(
     columns: int = 1,
     start: int = 0,
     points: int = 1600,
-    title: str | None = None,
+    title: Optional[str] = None,
 ) -> Figure:
     """Plot raw vectors in row-major order; return a figure for saving/customizing.
 

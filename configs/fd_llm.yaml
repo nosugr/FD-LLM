@@ -1,6 +1,6 @@
 # 论文明确给出的参数单独注明，其余为可调整的工程默认值。
 seed: 42
-device: auto
+device: cuda  # AutoDL 正式运行必须使用 GPU；CUDA 不可用时直接报错。
 data:
   train_path: data/datasets/CWRU/processed/train.npz
   test_path: data/datasets/CWRU/processed/test.npz

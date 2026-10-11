@@ -3,6 +3,7 @@
 import json
 from dataclasses import asdict
 from pathlib import Path
+from typing import Optional
 
 import numpy as np
 from scipy.io import loadmat
@@ -30,7 +31,7 @@ def load_config(path: Path = DEFAULT_CONFIG) -> dict:
     return config
 
 
-def load_signal(raw_dir: Path, source: ClassSource) -> tuple[np.ndarray, int | None]:
+def load_signal(raw_dir: Path, source: ClassSource) -> tuple[np.ndarray, Optional[int]]:
     path = raw_dir / source.source_file
     if not path.is_file():
         raise FileNotFoundError(f"Missing CWRU source file: {path}")

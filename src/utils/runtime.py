@@ -1,7 +1,8 @@
 """Configuration, device selection and reproducibility shared by both stages."""
 
 import random
-from pathlib import Path
+import os
+from pathlib import Path, PureWindowsPath
 
 import numpy as np
 import torch
@@ -12,14 +13,17 @@ DEFAULT_CONFIG = PROJECT_ROOT / "configs/fd_llm.yaml"
 
 
 def load_config(path=DEFAULT_CONFIG):
-    config = yaml.safe_load(Path(path).read_text(encoding="utf-8"))
+    config = yaml.safe_load(project_path(path).read_text(encoding="utf-8"))
     if not isinstance(config, dict):
         raise ValueError("Configuration must be a YAML mapping")
     return config
 
 
 def project_path(path):
-    path = Path(path)
+    value = os.path.expandvars(os.path.expanduser(os.fspath(path)))
+    if os.name != "nt" and (PureWindowsPath(value).drive or "\\" in value):
+        raise ValueError(f"Windows path is not usable on Linux: {value}; use a server path with '/' separators")
+    path = Path(value)
     return path if path.is_absolute() else PROJECT_ROOT / path
 
 
